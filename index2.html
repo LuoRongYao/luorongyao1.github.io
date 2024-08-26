@@ -1,199 +1,182 @@
-https://www.1nzb.com/music/2105435473.html
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>本地音乐播放器</title>
+    <meta charset="utf-8">
+    <title>wgchen</title>
+    <link rel="shortcut icon" href="#" />
+    <meta name="keywords" content="https://wgchen.blog.csdn.net">
+    <meta name="keywords" content="技术文章">
+    <meta name="keywords" content="博客">
+    <meta name="keywords" content="willem">
+    <meta name="keywords" content="ycc">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            display: grid;
+            grid-auto-flow: column;
+            grid-gap: 8vw;
+            place-content: center;
             margin: 0;
-            padding: 20px;
+            height: 100vh;
+            background: #ecf0f4;
         }
-        #container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
-        }
-        #left-panel {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        #right-panel {
-            flex: 1;
-        }
-        #lyricsContainer {
-            font-size: 16px;
-            line-height: 1.5;
-            white-space: pre-wrap;
-            margin-top: 20px;
-            height: 300px;
-            overflow-y: scroll;
-            border: 1px solid #ccc;
-            padding: 10px;
-        }
-        .activeLyric {
-            color: red;
-            font-weight: bold;
-        }
-        .vinyl {
-            width: 200px;
-            height: 200px;
-            background-size: cover;
-            margin: 0 auto;
-        }
-        .controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-        .controls button {
-            padding: 10px 20px;
-            margin: 0 10px;
+
+        button {
+            --i: var(--light, 0);
+            --not-i: calc(1 - var(--i));
+            --j: var(--press, 0);
+            --not-j: calc(1 - var(--j));
+            z-index: var(--i);
             border: none;
-            border-radius: 5px;
-            background-color: #333;
+            padding: 0.5em 4em; /* 调整按钮长度 */
+            border-radius: 0; /* 去掉圆角 */
+            transform: scale(calc(1 - var(--j)*.02));
+            box-shadow: 
+                calc(var(--not-j)*-0.25em) calc(var(--not-j)*-0.25em) 0.5em rgba(252, 252, 252, var(--not-j)), 
+                calc(var(--not-j)*0.25em) calc(var(--not-j)*0.25em) 0.5em rgba(210, 218, 230, var(--not-j)), 
+                inset calc(var(--j)*0.25em) calc(var(--j)*0.25em) 0.5em rgba(210, 218, 230, var(--j)), 
+                inset calc(var(--j)*-0.25em) calc(var(--j)*-0.25em) 0.5em rgba(252, 252, 252, var(--j));
+            background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+            background-size: 400%;
+            font-size: 1.5em;
+            transition: box-shadow 0.3s, transform 0.3s cubic-bezier(0.2, 4, 1, 3);
+            cursor: pointer;
             color: #fff;
-            cursor: pointer;
+            font-family: 'Arial', sans-serif; /* 调整字体 */
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 0 5px white, 0 0 5px white; /* 添加文字发光效果 */
+            animation: animate 8s linear infinite;
+            transform: skew(-20deg); /* 调整为菱形 */
         }
-        .song-list {
-            margin-top: 20px;
+
+        @keyframes animate {
+            0% {
+                background-position: 0%;
+            }
+            100% {
+                background-position: 400%;
+            }
         }
-        .song-list ul {
-            list-style: none;
-            padding: 0;
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            z-index: -1;
+            background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+            background-size: 400%;
+            border-radius: 0; /* 去掉圆角 */
+            opacity: 1;
+            filter: blur(20px);
+            animation: animate 8s linear infinite;
+            transform: skew(-20deg); /* 调整为菱形 */
         }
-        .song-list li {
-            padding: 10px;
-            cursor: pointer;
-            border-bottom: 1px solid #ccc;
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid white;
+            animation: move 4s linear infinite;
+            transform: skew(-20deg); /* 调整为菱形 */
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
         }
-        .song-list li:hover {
-            background-color: #f0f0f0;
+
+        @keyframes move {
+            0% {
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+            }
+            25% {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+            50% {
+                clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 0);
+            }
+            75% {
+                clip-path: polygon(100% 100%, 0 100%, 0 0, 100% 0);
+            }
+            100% {
+                clip-path: polygon(0 100%, 0 0, 100% 0, 100% 100%);
+            }
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        button:hover,
+        button:focus {
+            --light: 1;
+        }
+
+        button:active {
+            --press: 1;
+        }
+
+        button span {
+            display: inline-block;
+            transform: skew(20deg); /* 文字反向倾斜 */
+        }
+
+        .line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid white;
+            animation: move2 4s linear infinite;
+            transform: skew(-20deg); /* 调整为菱形 */
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        @keyframes move2 {
+            0% {
+                clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+            }
+            25% {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+            50% {
+                clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 0);
+            }
+            75% {
+                clip-path: polygon(100% 100%, 0 100%, 0 0, 100% 0);
+            }
+            100% {
+                clip-path: polygon(0 100%, 0 0, 100% 0, 100% 100%);
+            }
+        }
+
+        .glow {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            z-index: -2;
+            background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+            background-size: 400%;
+            border-radius: 0; /* 去掉圆角 */
+            opacity: 0.8;
+            filter: blur(40px);
+            animation: animate 8s linear infinite;
+            transform: skew(-20deg); /* 调整为菱形 */
         }
     </style>
 </head>
+
 <body>
-    <div id="music-matrix" class="content blurred-border" style="padding: 20px; border-radius: 10px; background-color: #f5f5f5;">
-        <h2 class="animate__animated animate__fadeIn conic-title" style="text-align: center; color: #696969; ">#我的音乐矩阵#</h2>
-        <div id="container">
-            <div id="left-panel">
-                <div class="vinyl" id="vinyl"></div>
-                <div class="controls">
-                    <button id="pauseBtnMusicMatrix" style="border-radius: 30px;background-color: #333333;color: white;">暂停</button>
-                </div>
-                <div id="lyricsContainer"></div>
-            </div>
-            <div id="right-panel">
-                <div class="song-list">
-                    <ul>
-                        <li onclick="changeSong('./41.jpg', 'Song 1', './10.mp3', 0.4, './10.lrc')" class="clickable-song"><span class="play-icon">▶</span> high part XMASwu吴骜-Princess</li>
-                        <li onclick="changeSong('./42.webp', 'Song 2', './12.mp3', 0.4, './12.lrc')" class="clickable-song"><span class="play-icon">▶</span> high part 颜人中-你想要的</li>
-                        <li onclick="changeSong('./133.jpg', 'Song 2', './144.MP3', 0.4, './144.lrc')" class="clickable-song"><span class="play-icon">▶</span> 嗜好 - 颜人中</li>
-                        <li onclick="changeSong('./155.jpg', 'Song 8', './125.mp3', 0.4, './125.lrc')" class="clickable-song"><span class="play-icon">▶</span> high part 郑润泽 - 忘记</li>
-                        <li onclick="changeSong('./43.webp', 'Song 3', './18.mp3', 0.4, './18.lrc')" class="clickable-song"><span class="play-icon">▶</span> high part 爱不单行 - 火鸡</li>
-                        <li onclick="changeSong('./51.webp', 'Song 4', './21.mp3', 0.4, './21.lrc')" class="clickable-song"><span class="play-icon">▶</span> AM:PM - NOTD,Maia Wright</li>
-                        <li onclick="changeSong('./45.webp', 'Song 5', './6.mp3', 0.4, './6.lrc')" class="clickable-song"><span class="play-icon">▶</span> high part 许靖韵 - 耿 (Live)</li>
-                        <li onclick="changeSong('./46.png', 'Song 6', './7.mp3', 0.4, './7.lrc')" class="clickable-song"><span class="play-icon">▶</span> high part Celine - 향수 (You Are My...)</li>
-                        <li onclick="changeSong('./47.webp', 'Song 7', './11.mp3', 0.4, './11.lrc')" class="clickable-song"><span class="play-icon">▶</span> high part 昭宥-You Dont know me</li>
-                        <li onclick="changeSong('./60.webp', 'Song 10', './22.mp3', 0.4, './22.lrc')" class="clickable-song"><span class="play-icon">▶</span> high part 8 Letters - Why Don't We</li>
-                        <li onclick="changeSong('./44.webp', 'Song 9', './19.mp3', 0.4, './19.lrc')" class="clickable-song"><span class="play-icon">▶</span> high part 致你 - yihuik苡慧</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <script>
-        let lyrics = [];
-        let audioPlayer;
+    <button aria-label="我的小屋"><span>我的小屋</span><div class="line"></div><div class="glow"></div></button>
 
-        function changeSong(imageUrl, songName, audioUrl, volume, lrcUrl) {
-            const vinyl = document.getElementById('vinyl');
-            vinyl.style.backgroundImage = `url(${imageUrl})`;
-
-            audioPlayer = document.createElement('audio');
-            audioPlayer.src = audioUrl;
-            audioPlayer.volume = volume;
-            audioPlayer.load();
-            audioPlayer.play();
-
-            document.getElementById('pauseBtnMusicMatrix').onclick = function() {
-                if (audioPlayer.paused) {
-                    audioPlayer.play();
-                } else {
-                    audioPlayer.pause();
-                }
-            };
-
-            fetch(lrcUrl)
-                .then(response => response.text())
-                .then(lrcText => {
-                    lyrics = parseLRC(lrcText);
-                    syncLyrics();
-                });
-        }
-
-        function parseLRC(lrcText) {
-            const lines = lrcText.split('\n');
-            const lyrics = [];
-            for (const line of lines) {
-                const timeTagMatch = line.match(/\[(\d{2}):(\d{2})\.(\d{2,3})\](.*)/);
-                if (timeTagMatch) {
-                    const minutes = parseInt(timeTagMatch[1], 10);
-                    const seconds = parseInt(timeTagMatch[2], 10);
-                    const milliseconds = parseInt(timeTagMatch[3], 10);
-                    const text = timeTagMatch[4].trim();
-                    const time = minutes * 60 * 1000 + seconds * 1000 + milliseconds;
-                    lyrics.push({ time, text });
-                }
-            }
-            return lyrics;
-        }
-
-        function syncLyrics() {
-            const lyricsContainer = document.getElementById('lyricsContainer');
-            lyricsContainer.innerHTML = '';
-
-            lyrics.forEach(lyric => {
-                const div = document.createElement('div');
-                div.textContent = lyric.text;
-                lyricsContainer.appendChild(div);
-            });
-
-            audioPlayer.addEventListener('timeupdate', () => {
-                const currentTime = audioPlayer.currentTime * 1000;
-                let found = false;
-
-                for (let i = 0; i < lyrics.length; i++) {
-                    if (currentTime < lyrics[i].time) {
-                        if (i > 0) {
-                            lyricsContainer.children[i - 1].classList.remove('activeLyric');
-                        }
-                        if (i < lyrics.length) {
-                            lyricsContainer.children[i].classList.add('activeLyric');
-                            lyricsContainer.children[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (!found && lyrics.length > 0) {
-                    lyricsContainer.children[lyrics.length - 1].classList.remove('activeLyric');
-                }
-            });
-        }
-    </script>
 </body>
+
 </html>
