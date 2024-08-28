@@ -1,51 +1,32 @@
-是的，你可以通过一些技术手段来实现网页优先加载字体，以确保字体文件在页面渲染时能够尽快加载完成。以下是一些常用的方法：
+.zoom-image {
+    transition: transform 0.3s ease; /* Smooth transition for the transform property */
+}
 
-1. **使用`preload`链接**：
-   你可以在HTML的`<head>`部分使用`<link>`标签的`preload`属性来提前加载字体文件。
+.zoom-image:hover {
+    transform: scale(1.1); /* Zoom in by 10% */
+}
 
-   ```html
-   <head>
-       <link rel="preload" href="./2.woff2" as="font" type="font/woff2" crossorigin>
-   </head>
-   ```
-
-   这个标签会告诉浏览器提前加载字体文件，但不会立即应用它。你需要在CSS中使用`@font-face`规则来应用字体。
-
-2. **使用`font-display`属性**：
-   `font-display`属性可以控制字体文件的加载行为。你可以设置为`swap`，这样浏览器会立即显示备用字体，一旦自定义字体加载完成，就会替换掉备用字体。
-
-   ```css
-   @font-face {
-       font-family: 'MaoBiTi';
-       src: url('./2.woff2') format('woff2'),
-            url('./2.woff') format('woff');
-       font-weight: normal;
-       font-style: normal;
-       font-display: swap;
-   }
-   ```
-
-3. **异步加载字体**：
-   你可以使用JavaScript来异步加载字体文件，这样可以避免阻塞页面的渲染。
-
-   ```javascript
-   (function() {
-       var font = new FontFace('MaoBiTi', 'url(./2.woff2)', {
-           style: 'normal',
-           weight: 'normal'
-       });
-       font.load().then(function(loadedFont) {
-           document.fonts.add(loadedFont);
-           document.body.style.fontFamily = 'MaoBiTi, SimSun, serif';
-       });
-   })();
-   ```
-
-4. **使用`rel="preconnect"`**：
-   如果你使用的是外部字体服务（如Google Fonts），可以使用`preconnect`来提前建立与字体服务器的连接，减少DNS查找和TCP握手的时间。
-
-   ```html
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   ```
-
-通过这些方法，你可以确保字体文件在页面渲染时能够优先加载，从而提高用户体验。记住，不同的方法可能适用于不同的场景，你可以根据具体情况选择最合适的方法。
+<div id="interesting" class="content blurred-border">
+    <button class="title-button" aria-label="我的小屋" style="margin-bottom: 40px;">
+        <span><i class="fa-solid fa-bolt"></i> 趣事</span>
+        <div class="line1"></div>
+        <div class="line2"></div>
+        <div class="glow"></div>
+        <div class="super-glow"></div>
+    </button>
+    <div class="apple-container" style="display: flex; align-items: center; justify-content: center;">
+        <img src="./57.jpg" data-aos="fade-up" alt="Apple" class="zoom-image" style="width: 100%; max-width: 600px; height: auto; border-radius: 10px; object-fit: cover; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    </div>
+    <div class="apple-container" style="display: flex; align-items: center; justify-content: center;margin-top: 4px;">
+        <img src="./58.jpg" data-aos="fade-up" alt="Apple" class="zoom-image" style="width: 100%; max-width: 600px; height: auto; border-radius: 10px; object-fit: cover; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    </div>
+    <div class="apple-container" style="display: flex; align-items: center; justify-content: center;margin-top: 4px;">
+        <img src="./157.jpg" data-aos="fade-up" alt="Apple" class="zoom-image" style="width: 100%; max-width: 600px; height: auto; border-radius: 10px; object-fit: cover; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    </div>
+    <div class="apple-container" style="display: flex; align-items: center; justify-content: center;margin-top: 4px;">
+        <img src="./59.jpg" data-aos="fade-up" alt="Apple" class="zoom-image" style="width: 100%; max-width: 600px; height: auto; border-radius: 10px; object-fit: cover; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    </div>
+    <div class="apple-container" style="display: flex; align-items: center; justify-content: center;margin-top: 4px;">
+        <img src="./61.jpg" data-aos="fade-up" alt="Apple" class="zoom-image" style="width: 100%; max-width: 600px; height: auto; border-radius: 10px; object-fit: cover; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    </div>
+</div>
